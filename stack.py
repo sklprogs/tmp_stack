@@ -13,10 +13,10 @@ class StackedWidget(PyQt5.QtWidgets.QWidget):
     def set_gui(self, mode=0):
         if mode == 0:
             text = 'Label 1'
-            color = 'green'
+            color = 'grey'
         elif mode == 1:
             text = 'Label 2'
-            color = 'blue'
+            color = 'orange'
         else:
             print('Wrong mode!')
             text = 'Wrong mode!'
@@ -43,29 +43,25 @@ class App(PyQt5.QtWidgets.QMainWindow):
         for hotkey in hotkeys:
             PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
+    def report_size(self):
+        mes = f'Label #{1}: {self.stacked1.label.width()}x{self.stacked1.label.height()}'
+        print(mes)
+        mes = f'Label #{2}: {self.stacked2.label.width()}x{self.stacked2.label.height()}'
+        print(mes)
+    
     def switch_stack(self):
+        self.report_size()
         if self.front:
             print('1 -> 0')
             self.front = 0
-            #self.label1.show()
-            #self.label2.hide()
-            self.stacked1.show()
             self.stacked2.hide()
-            # mes = f'Label {1}: {self.label1.width()}x{self.label1.height()}'
-            # print(mes)
-            # mes = f'Label {2}: {self.label2.width()}x{self.label2.height()}'
-            # print(mes)
+            self.stacked1.show()
         else:
             print('0 -> 1')
             self.front = 1
-            #self.label1.hide()
-            #self.label2.show()
             self.stacked1.hide()
             self.stacked2.show()
-            # mes = f'Label {1}: {self.label1.width()}x{self.label1.height()}'
-            # print(mes)
-            # mes = f'Label {2}: {self.label2.width()}x{self.label2.height()}'
-            # print(mes)
+        self.report_size()
     
     def set_gui(self):
         self.create()
@@ -82,17 +78,9 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.layout_.addWidget(self.pane2, 1, 1, 1, 1)
         self.setCentralWidget(self.central)
         self.pane1.setLayout(self.stack)
+        
         self.stack.addWidget(self.stacked1)
         self.stack.addWidget(self.stacked2)
-        
-        # Stacked widgets must be of the same size. For some reason, the 2nd
-        # label is created disproportionally large though its text is short.
-        #self.stacked1.label.resize(109, 17)
-        #self.stacked2.label.resize(109, 17)
-        #self.stacked1.resize(109, 17)
-        #self.stacked2.resize(109, 17)
-        #self.stacked1.move(0, 0)
-        #self.stacked2.move(0, 0)
     
     def create(self):
         self.central = PyQt5.QtWidgets.QWidget()
@@ -102,7 +90,6 @@ class App(PyQt5.QtWidgets.QMainWindow):
         self.stack = PyQt5.QtWidgets.QStackedLayout()
         self.stacked1 = StackedWidget().run(0)
         self.stacked2 = StackedWidget().run(1)
-        
 
 
 
