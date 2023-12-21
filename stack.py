@@ -44,10 +44,18 @@ class App(PyQt5.QtWidgets.QMainWindow):
             PyQt5.QtWidgets.QShortcut(PyQt5.QtGui.QKeySequence(hotkey), self).activated.connect(action)
     
     def report_size(self):
-        mes = f'Label #{1}: {self.stacked1.label.width()}x{self.stacked1.label.height()}'
+        mes = f'Stack #{1}: {self.stacked1.width()}x{self.stacked1.height()}'
         print(mes)
-        mes = f'Label #{2}: {self.stacked2.label.width()}x{self.stacked2.label.height()}'
+        mes = f'Stack #{2}: {self.stacked2.width()}x{self.stacked2.height()}'
         print(mes)
+    
+    def resize2(self):
+        # For some reason, the hidden widget becomes disproportionally large
+        self.stacked2.resize(self.stacked1.width(), self.stacked1.height())
+    
+    def resize1(self):
+        # For some reason, the hidden widget becomes disproportionally large
+        self.stacked1.resize(self.stacked2.width(), self.stacked2.height())
     
     def switch_stack(self):
         self.report_size()
@@ -56,11 +64,13 @@ class App(PyQt5.QtWidgets.QMainWindow):
             self.front = 0
             self.stacked2.hide()
             self.stacked1.show()
+            self.resize1()
         else:
             print('0 -> 1')
             self.front = 1
             self.stacked1.hide()
             self.stacked2.show()
+            self.resize2()
         self.report_size()
     
     def set_gui(self):
